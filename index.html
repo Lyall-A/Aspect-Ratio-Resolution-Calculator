@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Aspect Ratio Calculator</title>
+</head>
+
+<body>
+    <select id="aspect">
+        <option value="16-9">16:9</option>
+        <option value="4-3">4:3</option>
+    </select>
+    <select id="res">
+        <option value="width">Width</option>
+        <option value="height">Height</option>
+    </select>
+    <input type="number" id="num">
+    <p id="value"></p>
+    <style>
+        * {
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 50px;
+        }
+
+        select,
+        input,
+        button {
+            font-size: 4vh;
+        }
+    </style>
+    <script>
+        document.getElementById("aspect").addEventListener("change", calculate);
+        document.getElementById("res").addEventListener("change", calculate);
+        document.getElementById("num").addEventListener("input", calculate);
+        function calculate(e) {
+            let value = document.getElementById("value");
+            let aspect = document.getElementById("aspect");
+            let res = document.getElementById("res");
+            let num = document.getElementById("num");
+            if (!num.value) {
+                value.innerHTML = "";
+            } else {
+                let rat1 = aspect.value.split("-")[0];
+                let rat2 = aspect.value.split("-")[1];
+                if (res.value === "width") {
+                    let d = Math.round(num.value) / rat1;
+                    value.innerHTML = `${Math.round(num.value)}x${Math.round(d * rat2)}`
+                }
+                if (res.value === "height") {
+                    let d = Math.round(num.value) / rat2;
+                    value.innerHTML = `${Math.round(d * rat1)}x${Math.round(num.value)}`
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
