@@ -1,63 +1,49 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Aspect Ratio Calculator</title>
 </head>
-
 <body>
-    <select id="aspect">
+    <select id="aspect-ratio" onchange="calculate()">
         <option value="16-9">16:9</option>
+        <option value="21-9">21:9</option>
         <option value="4-3">4:3</option>
+        <option value="1-1">1:1</option>
     </select>
-    <select id="res">
+
+    <select id="dimension" onchange="calculate()">
         <option value="width">Width</option>
         <option value="height">Height</option>
     </select>
-    <input type="number" id="num">
+    
+    <input type="number" id="input" oninput="calculate()">
+
     <p id="value"></p>
+
     <style>
         * {
             text-align: center;
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: bold;
-        }
-
-        p {
-            font-size: 50px;
-        }
-
-        select,
-        input,
-        button {
+            font-family: Arial;
             font-size: 4vh;
         }
     </style>
+
     <script>
-        document.getElementById("aspect").addEventListener("change", calculate);
-        document.getElementById("res").addEventListener("change", calculate);
-        document.getElementById("num").addEventListener("input", calculate);
-        function calculate(e) {
-            let value = document.getElementById("value");
-            let aspect = document.getElementById("aspect");
-            let res = document.getElementById("res");
-            let num = document.getElementById("num");
-            if (!num.value) {
-                value.innerHTML = "";
-            } else {
-                let rat1 = aspect.value.split("-")[0];
-                let rat2 = aspect.value.split("-")[1];
-                if (res.value === "width") {
-                    let d = Math.round(num.value) / rat1;
-                    value.innerHTML = `${Math.round(num.value)}x${Math.round(d * rat2)}`
-                }
-                if (res.value === "height") {
-                    let d = Math.round(num.value) / rat2;
-                    value.innerHTML = `${Math.round(d * rat1)}x${Math.round(num.value)}`
-                }
-            }
+        const aspectRatio = document.getElementById("aspect-ratio");
+        const dimension = document.getElementById("dimension");
+        const input = document.getElementById("input");
+        const value = document.getElementById("value");
+
+        function calculate() {    
+            if (!input.value) return value.innerHTML = "";
+
+            const [ratio1, ratio2] = aspectRatio.value.split("-");
+
+            const i = input.value / (dimension.value == "width" ? ratio1 : ratio2);
+            value.innerHTML = dimension.value == "width" ?
+                `${input.value}x${i * ratio2}` :
+                `${i * ratio1}x${input.value}`;
         }
     </script>
 </body>
-
 </html>
